@@ -21,7 +21,8 @@ public class Interfaz extends javax.swing.JFrame {
     ImageIcon galleta = new ImageIcon("CookieClicker/cookie.png");
     
     Image imagen = galleta.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
-   
+    private final ImageIcon galletaPequena = new ImageIcon(galleta.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH));
+
     ImageIcon galletamini = new ImageIcon(imagen);
     
     /**
@@ -30,22 +31,21 @@ public class Interfaz extends javax.swing.JFrame {
     public Interfaz(Sistema sistema) {
         this.sistema = sistema;
         initComponents();
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        this.setIconImage(galletamini.getImage());
+        this.setTitle("Cookie Clicker");
         this.setLocationRelativeTo(null);
         jLabel1.setText("");
         jLabel1.setIcon(galletamini);
         
-        Timer refrescarTimer = new javax.swing.Timer(300, (e) -> {
+        refrescarTabla();
+        
+        Timer refrescarTimer = new javax.swing.Timer(150, (e) -> {
             try {
                 jLabel2.setText("Cookies: " + sistema.getNumeroGalletas());
 
-                // Actualizar la tabla con los valores actuales
-                javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
-                model.setRowCount(0); // Limpiar la tabla
-                model.addRow(new Object[]{"Cursor", (int) Math.ceil(15 * Math.pow(1.15, sistema.getNumCursors())), sistema.getNumCursors()});
-                model.addRow(new Object[]{"Abuela", (int) Math.ceil(100 * Math.pow(1.15, sistema.getNumAbuelas())), sistema.getNumAbuelas()});
-                model.addRow(new Object[]{"Granja", (int) Math.ceil(500 * Math.pow(1.15, sistema.getNumGranjas())), sistema.getNumGranjas()});
-                model.addRow(new Object[]{"Fábrica", (int) Math.ceil(3000 * Math.pow(1.15, sistema.getNumFabricas())), sistema.getNumFabricas()});
-                model.addRow(new Object[]{"Banco", (int) Math.ceil(20000 * Math.pow(1.15, sistema.getNumBancos())), sistema.getNumBancos()});
+
             } catch (Exception ex) {
                 System.out.println("Error al actualizar las galletas: " + ex.getMessage());
             }
@@ -53,6 +53,15 @@ public class Interfaz extends javax.swing.JFrame {
     });
         refrescarTimer.start();
         
+    }
+    public void refrescarTabla() {
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Limpiar la tabla
+        model.addRow(new Object[]{"Cursor", (int) Math.ceil(15 * Math.pow(1.15, sistema.getNumCursors())), sistema.getNumCursors()});
+        model.addRow(new Object[]{"Abuela", (int) Math.ceil(100 * Math.pow(1.15, sistema.getNumAbuelas())), sistema.getNumAbuelas()});
+        model.addRow(new Object[]{"Granja", (int) Math.ceil(500 * Math.pow(1.15, sistema.getNumGranjas())), sistema.getNumGranjas()});
+        model.addRow(new Object[]{"Fábrica", (int) Math.ceil(3000 * Math.pow(1.15, sistema.getNumFabricas())), sistema.getNumFabricas()});
+        model.addRow(new Object[]{"Banco", (int) Math.ceil(20000 * Math.pow(1.15, sistema.getNumBancos())), sistema.getNumBancos()});
     }
 
     /**
@@ -211,8 +220,15 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
-        System.out.println("Hola");
+
         sistema.Click();
+        jLabel1.setIcon(galletaPequena); // Cambia a pequeña
+
+        // Después de 120 ms, vuelve al tamaño normal
+        new javax.swing.Timer(120, e -> {
+            jLabel1.setIcon(galletamini);
+            ((javax.swing.Timer) e.getSource()).stop();
+        }).start();
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -255,6 +271,8 @@ public class Interfaz extends javax.swing.JFrame {
                 }
                 break;
         }
+        // Actualizar la tabla después de la compra
+        refrescarTabla();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

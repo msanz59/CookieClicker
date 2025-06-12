@@ -5,7 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Sistema extends Thread implements Serializable {
+public class Sistema implements Serializable {
     private transient AtomicInteger numeroGalletas = new AtomicInteger(0);
     private transient ExecutorService executor = Executors.newCachedThreadPool();
     private int numCursors = 0;
@@ -19,6 +19,7 @@ public class Sistema extends Thread implements Serializable {
     private int numBancos = 0;
     private int precioBancos = 20000;
     private int numeroGalletasValor;
+    private boolean dobleClick = false;
 
     private void writeObject(ObjectOutputStream oos) throws IOException {
         numeroGalletasValor = numeroGalletas.get();
@@ -56,9 +57,16 @@ public class Sistema extends Thread implements Serializable {
     }
 
     public synchronized void Click() {
-        numeroGalletas.incrementAndGet();
-        System.out.println("Galletas: " + numeroGalletas.get());
+        if (dobleClick) {
+            numeroGalletas.addAndGet(2);
+        } else {
+            numeroGalletas.incrementAndGet();
+        }
     }
+    public void setDobleClick(boolean dobleClick) {
+        this.dobleClick = dobleClick;
+    }
+
 
     public int getNumeroGalletas() {
         return numeroGalletas.get();
