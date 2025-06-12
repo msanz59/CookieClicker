@@ -15,11 +15,14 @@ public class CookieClicker {
 
     public static void main(String[] args)
     {
-        Sistema sistema = new Sistema();
+        Sistema sistema = Sistema.cargarEstado("datos.ser");
         Interfaz interfaz = new Interfaz(sistema);
         interfaz.setVisible(true);
 
-
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            sistema.guardarEstado("datos.ser");
+            System.out.println("Estado guardado.");
+        }));
 
     }
 
