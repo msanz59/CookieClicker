@@ -22,6 +22,7 @@ public class Sistema extends Thread {
         numeroGalletas.incrementAndGet();
         System.out.println("Galletas: " + numeroGalletas.get());
     }
+
     public int getNumeroGalletas() {
         return numeroGalletas.get();
     }
@@ -39,6 +40,7 @@ public class Sistema extends Thread {
         Creador cursor = new Creador(this, 1, 10000);
         executor.execute(cursor);
         numCursors++;
+        numeroGalletas.addAndGet(-precioActual);
 
     }
     public void CrearAbuela(){
@@ -50,6 +52,7 @@ public class Sistema extends Thread {
         Creador abuela = new Creador(this, 1, 1000);
         executor.execute(abuela);
         numAbuelas++;
+        numeroGalletas.addAndGet(-precioActual);
     }
     public int getNumCursors() {
         return numCursors;
@@ -66,6 +69,7 @@ public class Sistema extends Thread {
         Creador granja = new Creador(this, 8, 1000);
         executor.execute(granja);
         numGranjas++;
+        numeroGalletas.addAndGet(-precioActual);
     }
     public void CrearFabrica(){
         int precioActual = (int) Math.ceil(precioFabricas * Math.pow(1.15, numFabricas));
@@ -76,6 +80,7 @@ public class Sistema extends Thread {
         Creador fabrica = new Creador(this, 47, 1000);
         executor.execute(fabrica);
         numFabricas++;
+        numeroGalletas.addAndGet(-precioActual);
     }
     public int getNumGranjas() {
         return numGranjas;
@@ -92,6 +97,7 @@ public class Sistema extends Thread {
         Creador banco = new Creador(this, 260, 1000);
         executor.execute(banco);
         numBancos++;
+        numeroGalletas.addAndGet(-precioActual);
     }
     public int getNumBancos() {
         return numBancos;

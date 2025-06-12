@@ -4,6 +4,7 @@ import main.java.Logica.Sistema;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.Timer;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -33,6 +34,25 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel1.setText("");
         jLabel1.setIcon(galletamini);
         
+        Timer refrescarTimer = new javax.swing.Timer(300, (e) -> {
+            try {
+                jLabel2.setText("Cookies: " + sistema.getNumeroGalletas());
+
+                // Actualizar la tabla con los valores actuales
+                javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0); // Limpiar la tabla
+                model.addRow(new Object[]{"Cursor", (int) Math.ceil(15 * Math.pow(1.15, sistema.getNumCursors())), sistema.getNumCursors()});
+                model.addRow(new Object[]{"Abuela", (int) Math.ceil(100 * Math.pow(1.15, sistema.getNumAbuelas())), sistema.getNumAbuelas()});
+                model.addRow(new Object[]{"Granja", (int) Math.ceil(500 * Math.pow(1.15, sistema.getNumGranjas())), sistema.getNumGranjas()});
+                model.addRow(new Object[]{"Fábrica", (int) Math.ceil(3000 * Math.pow(1.15, sistema.getNumFabricas())), sistema.getNumFabricas()});
+                model.addRow(new Object[]{"Banco", (int) Math.ceil(20000 * Math.pow(1.15, sistema.getNumBancos())), sistema.getNumBancos()});
+            } catch (Exception ex) {
+                System.out.println("Error al actualizar las galletas: " + ex.getMessage());
+            }
+            
+    });
+        refrescarTimer.start();
+        
     }
 
     /**
@@ -46,8 +66,17 @@ public class Interfaz extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(60, 86, 80));
 
         jLabel1.setText("jLabel1");
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -56,21 +85,105 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel2.setText("Cookies: ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 6, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(93, 93, 93)
+                .addGap(40, 40, 40)
+                .addComponent(jLabel2)
+                .addGap(31, 31, 31)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 113, Short.MAX_VALUE)
+        );
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Tipo", "Precio", "Cantidad comprada"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton1.setText("Comprar!");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cursor", "Abuela", "Granja", "Fábrica", "Banco" }));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -79,11 +192,18 @@ public class Interfaz extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 172, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -95,13 +215,62 @@ public class Interfaz extends javax.swing.JFrame {
         sistema.Click();
     }//GEN-LAST:event_jLabel1MouseClicked
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String seleccion = (String) jComboBox1.getSelectedItem();
+        switch (seleccion) {
+            case "Cursor":
+                if (sistema.getNumeroGalletas() >= Math.ceil(15 * Math.pow(1.15, sistema.getNumCursors()))) {
+                    sistema.CrearCursor();
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this, "No tienes suficientes galletas para comprar un Cursor.", "Fondos insuficientes", javax.swing.JOptionPane.WARNING_MESSAGE);
+                }
+                break;
+            case "Abuela":
+                if (sistema.getNumeroGalletas() >= Math.ceil(100 * Math.pow(1.15, sistema.getNumAbuelas()))) {
+                    sistema.CrearAbuela();
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this, "No tienes suficientes galletas para comprar una Abuela.", "Fondos insuficientes", javax.swing.JOptionPane.WARNING_MESSAGE);
+                }
+                break;
+            case "Granja":
+                if (sistema.getNumeroGalletas() >= Math.ceil(500 * Math.pow(1.15, sistema.getNumGranjas()))) {
+                    sistema.CrearGranja();
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this, "No tienes suficientes galletas para comprar una Granja.", "Fondos insuficientes", javax.swing.JOptionPane.WARNING_MESSAGE);
+                }
+                break;
+            case "Fábrica":
+                if (sistema.getNumeroGalletas() >= Math.ceil(3000 * Math.pow(1.15, sistema.getNumFabricas()))) {
+                    sistema.CrearFabrica();
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this, "No tienes suficientes galletas para comprar una Fábrica.", "Fondos insuficientes", javax.swing.JOptionPane.WARNING_MESSAGE);
+                }
+                break;
+            case "Banco":
+                if (sistema.getNumeroGalletas() >= Math.ceil(20000 * Math.pow(1.15, sistema.getNumBancos()))) {
+                    sistema.CrearBanco();
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this, "No tienes suficientes galletas para comprar un Banco.", "Fondos insuficientes", javax.swing.JOptionPane.WARNING_MESSAGE);
+                }
+                break;
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
